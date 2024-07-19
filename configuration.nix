@@ -20,9 +20,14 @@
       '';
     };
   };
-  fileSystems."/" = {
-    device = "UUID=2a7306b2-2a16-4894-b4c9-7649bf598754";
-    fsType = "ext4";
+  fileSystems = {
+    "/boot" = {
+      device = "UUID=4AA3-EF9F";
+    };
+    "/" = {
+      device = "UUID=387e8327-4894-4aa1-8a88-b3f3a663bac2";
+      fsType = "ext4";
+    };
   };
   nixpkgs.overlays = [
     (self: super: {
@@ -40,4 +45,31 @@
   systemd.shutdownRamfs.enable = false;
   services.nscd.enableNsncd = false;
   virtualisation.libvirtd.enable = false;
+  networking = {
+    nameservers = [ "75.75.75.75" ];
+    defaultGateway = "10.0.0.1";
+    firewall.enable = false;
+    interfaces.enp0s7 = {
+      ipv4.addresses = [
+        {
+          address = "10.0.0.206";
+          prefixLength = 24;
+        }
+      ];
+    };
+  };
+  services = {
+    openssh = {
+      enable = true;
+    };
+  };
+  users = {
+    users = {
+      vali = {
+        isNormalUser = true;
+        uid = 1000;
+        extraGroups = [ "wheel" ];
+      };
+    };
+  };
 }
