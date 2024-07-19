@@ -1,6 +1,11 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ./xbox360.nix
+  ];
+  boot.loader.kboot.enable = true;
+  boot.loader.grub.enable = false;
   boot.kernelPackages = pkgs.linuxXenonPackages;
   nixpkgs.crossSystem = {
     config = "powerpc64-unknown-linux-gnuabielfv2";
@@ -19,7 +24,6 @@
     device = "UUID=2a7306b2-2a16-4894-b4c9-7649bf598754";
     fsType = "ext4";
   };
-  boot.loader.grub.enable = false;
   nixpkgs.overlays = [
     (self: super: {
       python3 = super.python3.overrideDerivation (old: {
