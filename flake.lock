@@ -1,0 +1,45 @@
+{
+  "nodes": {
+    "linux": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1716333586,
+        "narHash": "sha256-edBNuRrY8uszhWqZ+1WFWLxDqKHyOPSlsGo3aoUox9w=",
+        "owner": "rwf93",
+        "repo": "linux",
+        "rev": "9bbbff4f7817e74f1e434b7bb2cd3801e1f9ff09",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rwf93",
+        "ref": "xenon-6.5",
+        "repo": "linux",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1721277301,
+        "narHash": "sha256-HhSc9SDL8csUSEFi/0UW3tqh0LkN2U5T0DT5LsIbxFY=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "48acb2ac49c9b9bdca050625be528f2efc4f123c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "48acb2ac49c9b9bdca050625be528f2efc4f123c",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "linux": "linux",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
