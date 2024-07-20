@@ -15,7 +15,9 @@
   };
   environment.systemPackages = with pkgs; [
     (neofetch.override { x11Support = false; })
+    pciutils
     screen
+    usbutils
   ];
   fileSystems = {
     "/boot" = {
@@ -44,6 +46,12 @@
     };
   };
   services = {
+    avahi = {
+      enable = true;
+      publish = {
+        enable = true;
+      };
+    };
     openssh = {
       enable = true;
     };

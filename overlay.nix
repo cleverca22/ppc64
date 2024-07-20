@@ -8,4 +8,5 @@ self: super: {
   libressl = self.hello;
   netcat = self.hello;
   makeModulesClosure = attrs: super.makeModulesClosure (attrs // { allowMissing = true; });
+  llvm_18 = null; # needed by rust, which fails to build
 }
