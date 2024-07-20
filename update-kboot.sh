@@ -3,6 +3,7 @@
 function addEntry() {
   ln -svf $1/init /init
   cp -vL $1/initrd /boot/initrd
+  cp -vL $1/kernel /boot/zImage.xenon
   echo $2=\"uda0:/zImage.xenon initrd=uda0:/initrd init=$1/init $(cat $1/kernel-params)\" >> /boot/kboot.tmp
 }
 

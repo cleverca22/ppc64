@@ -7,8 +7,16 @@
     autoModules = false;
     baseConfig = "xenon_defconfig";
     extraConfig = ''
+      CFG80211 y
       FAT_FS y
+      LEDS_CLASS y
+      MAC80211 y
+      RTL8XXXU y
+      USB y
       VFAT_FS y
+      WIRELESS y
+      WLAN y
+      WLAN_VENDOR_REALTEK y
     '';
   };
 }
