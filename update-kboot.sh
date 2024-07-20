@@ -1,12 +1,20 @@
 #! @crossShell@
 
-ln -svf $1/init /init
-
-cp -vL $1/initrd /boot/initrd
+function addEntry() {
+  ln -svf $1/init /init
+  cp -vL $1/initrd /boot/initrd
+  echo $2=\"uda0:/zImage.xenon initrd=uda0:/initrd init=$1/init $(cat $1/kernel-params)\" >> /boot/kboot.tmp
+}
 
 cp @kbootTemplate@ /boot/kboot.tmp
 
-echo 'nixos_latest="uda0:/zImage.xenon initrd=uda0:/initrd console=tty0 console=ttyS0,115200 video=xenonfb loglevel=16 coherent_pool=16M nokaslr init=/init"' >> /boot/kboot.tmp
+readarray -d '' generations < <(printf '%s\0' /nix/var/nix/profiles/system-*-link | sort -zV)
+for generation in "${generations[@]}"; do
+  echo $generation
+done
+
+addEntry "$1" nixos_latest
+
 echo 'default=nixos_latest' >> /boot/kboot.tmp
 
 mv /boot/kboot.tmp /boot/kboot.conf

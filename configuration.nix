@@ -5,12 +5,18 @@
     ./xbox360.nix
   ];
   boot = {
+    consoleLogLevel = 16;
     loader = {
-      kboot.enable = true;
       grub.enable = false;
+      kboot.enable = true;
     };
     kernelPackages = pkgs.linuxXenonPackages;
     kernelParams = [
+      "coherent_pool=16M"
+      "console=tty0"
+      "console=ttyS0,115200"
+      "nokaslr"
+      "video=xenonfb"
     ];
   };
   environment.systemPackages = with pkgs; [
