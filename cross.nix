@@ -4,12 +4,11 @@
   linux-kernel = {
     name = "ppc xenon";
     target = "zImage.xenon";
-    autoModules = true;
+    autoModules = false;
     baseConfig = "xenon_defconfig";
     extraConfig = ''
-      RTC_DRV_XENON n
-      SND_XENON n
+      FAT_FS y
+      VFAT_FS y
     '';
   };
 }
- 

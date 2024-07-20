@@ -11,32 +11,8 @@
     host = import nixpkgs { system = "x86_64-linux"; };
     p = import nixpkgs {
       system = "x86_64-linux";
-      crossSystem = {
-        config = "powerpc64-unknown-linux-gnuabielfv2";
-        #config = "powerpc64-unknown-linux-gnu";
-        linux-kernel = {
-          name = "ppc xenon";
-          target = "zImage.xenon";
-          autoModules = false;
-          baseConfig = "xenon_defconfig";
-          extraConfig = ''
-            FAT_FS y
-            VFAT_FS y
-          '';
-        };
-      };
-      overlays = [ (self: super: {
-        # systemd = null;
-        util-linux = super.util-linux.override { systemdSupport = false; };
-        python3 = super.python3.overrideDerivation (old: {
-          #patches = [ ./c3677befbecbd7fa94cde8c1fecaa4cc18e6aa2b.patch ] ++ old.patches;
-          patches =
-            [
-              "${nixpkgs}/pkgs/development/interpreters/python/cpython/3.12/0001-Fix-build-with-_PY_SHORT_FLOAT_REPR-0.patch"
-            ]
-            ++ old.patches;
-        });
-      }) ];
+      crossSystem = import ./cross.nix;
+      overlays = [ (import ./overlay.nix) ];
     };
   in {
     packages.powerpc64-linux = {
@@ -48,23 +24,23 @@
       }).overrideDerivation (old: {
         installTargets = [ "install" "modules_install" ];
         postInstall = ''
-          pwd
-          ls -l
           cp arch/powerpc/boot/zImage.xenon $out/
         '';
       });
-      nixos = (import (nixpkgs + "/nixos") {
-        system = "x86_64-linux";
-        configuration = {
-          imports = [ ./configuration.nix ];
-          nixpkgs.overlays = [
-            (self': super: {
-              linux_xenon = self.packages.powerpc64-linux.linux;
-              linuxXenonPackages = self'.linuxPackagesFor self'.linux_xenon;
-            })
-          ];
+      nixos = let
+        eval = import (nixpkgs + "/nixos") {
+          system = "x86_64-linux";
+          configuration = {
+            imports = [ ./configuration.nix ];
+            nixpkgs.overlays = [
+              (self': super: {
+                linux_xenon = self.packages.powerpc64-linux.linux;
+                linuxXenonPackages = self'.linuxPackagesFor self'.linux_xenon;
+              })
+            ];
+          };
         };
-      }).system;
+      in eval.system // { inherit eval; };
       nixos_tar = host.callPackage (nixpkgs + "/nixos/lib/make-system-tarball.nix") {
         fileName = "nixos_tar";
         storeContents = [

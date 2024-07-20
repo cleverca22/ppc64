@@ -4,22 +4,19 @@
   imports = [
     ./xbox360.nix
   ];
-  boot.loader.kboot.enable = true;
-  boot.loader.grub.enable = false;
-  boot.kernelPackages = pkgs.linuxXenonPackages;
-  nixpkgs.crossSystem = {
-    config = "powerpc64-unknown-linux-gnuabielfv2";
-    linux-kernel = {
-      name = "ppc xenon";
-      target = "zImage.xenon";
-      autoModules = true;
-      baseConfig = "xenon_defconfig";
-      extraConfig = ''
-        RTC_DRV_XENON n
-        SND_XENON n
-      '';
+  boot = {
+    loader = {
+      kboot.enable = true;
+      grub.enable = false;
     };
+    kernelPackages = pkgs.linuxXenonPackages;
+    kernelParams = [
+    ];
   };
+  environment.systemPackages = with pkgs; [
+    (neofetch.override { x11Support = false; })
+    screen
+  ];
   fileSystems = {
     "/boot" = {
       device = "UUID=4AA3-EF9F";
@@ -29,22 +26,10 @@
       fsType = "ext4";
     };
   };
-  nixpkgs.overlays = [
-    (self: super: {
-      python3 = super.python3.overrideDerivation (old: {
-        patches =
-          [
-            # "${pkgs.path}/pkgs/development/interpreters/python/cpython/3.12/0001-Fix-build-with-_PY_SHORT_FLOAT_REPR-0.patch"
-          ]
-          ++ old.patches;
-      });
-      libressl = self.hello;
-      netcat = self.hello;
-    })
-  ];
-  systemd.shutdownRamfs.enable = false;
-  services.nscd.enableNsncd = false;
-  virtualisation.libvirtd.enable = false;
+  nixpkgs = {
+    overlays = [ (import ./overlay.nix) ];
+    crossSystem = import ./cross.nix;
+  };
   networking = {
     nameservers = [ "75.75.75.75" ];
     defaultGateway = "10.0.0.1";
@@ -62,7 +47,12 @@
     openssh = {
       enable = true;
     };
+    nscd.enableNsncd = false;
+    xserver = {
+      enable = false;
+    };
   };
+  systemd.shutdownRamfs.enable = false;
   users = {
     users = {
       vali = {
@@ -72,4 +62,5 @@
       };
     };
   };
+  #virtualisation.libvirtd.enable = false;
 }
