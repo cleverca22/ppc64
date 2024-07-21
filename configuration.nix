@@ -50,6 +50,9 @@
         }
       ];
     };
+    wireless = {
+      enable = true;
+    };
   };
   services = {
     avahi = {

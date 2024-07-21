@@ -9,6 +9,8 @@
     extraConfig = ''
       CFG80211 y
       FAT_FS y
+      FW_LOADER_COMPRESS y
+      FW_LOADER_COMPRESS_ZSTD y
       LEDS_CLASS y
       MAC80211 y
       RTL8XXXU y
