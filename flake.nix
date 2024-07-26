@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/staging";
+    nixpkgs.url = "github:cleverca22/nixpkgs/systemd-fixes";
     linux = {
       url = "github:rwf93/linux/xenon-6.5";
       flake = false;

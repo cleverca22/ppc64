@@ -19,16 +19,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1722016899,
-        "narHash": "sha256-a8qryRL21czV80ZVZ2bPAGAURqJmxDai9cXmklXxolA=",
-        "owner": "nixos",
+        "lastModified": 1722037887,
+        "narHash": "sha256-1iiiJkPp1aFdZFtow4LgFfz+ioDI8nqErDCGOyCpdsw=",
+        "owner": "cleverca22",
         "repo": "nixpkgs",
-        "rev": "8c2e73a4ed903c701f3c6205634d5f4907b873b0",
+        "rev": "1de54764ac5aa42f5718224f8ab44634581b94ed",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "staging",
+        "owner": "cleverca22",
+        "ref": "systemd-fixes",
         "repo": "nixpkgs",
         "type": "github"
       }
