@@ -68,6 +68,7 @@
     openssh = {
       enable = true;
     };
+    speechd.enable = false;
     xserver = {
       #enable = true;
     };
