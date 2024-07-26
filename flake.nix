@@ -52,5 +52,8 @@
         contents = [];
       };
     };
+    hydraJobs.powerpc64-linux = {
+      inherit (self.packages.powerpc64-linux) nixos;
+    };
   };
 }
