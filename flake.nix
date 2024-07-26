@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/48acb2ac49c9b9bdca050625be528f2efc4f123c";
+    nixpkgs.url = "github:nixos/nixpkgs/staging";
     linux = {
       url = "github:rwf93/linux/xenon-6.5";
       flake = false;
@@ -16,7 +16,7 @@
     };
   in {
     packages.powerpc64-linux = {
-      inherit (p) debootstrap screen gnupg python3 nix;
+      inherit (p) debootstrap screen gnupg python3 nix systemd;
       linux = (p.buildLinux {
         src = linux;
         version = "6.5.0-xenon";

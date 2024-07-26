@@ -18,7 +18,9 @@
       "nokaslr"
       "video=xenonfb"
     ];
+    #supportedFilesystems = [ "zfs" ];
   };
+  documentation.enable = false;
   environment.systemPackages = with pkgs; [
     (neofetch.override { x11Support = false; })
     pciutils
@@ -35,13 +37,13 @@
     };
   };
   nixpkgs = {
-    overlays = [ (import ./overlay.nix) ];
     crossSystem = import ./cross.nix;
+    overlays = [ (import ./overlay.nix) ];
   };
   networking = {
-    nameservers = [ "75.75.75.75" ];
     defaultGateway = "10.0.0.1";
     firewall.enable = false;
+    hostId = "aacc9931";
     interfaces.enp0s7 = {
       ipv4.addresses = [
         {
@@ -50,6 +52,7 @@
         }
       ];
     };
+    nameservers = [ "75.75.75.75" ];
     wireless = {
       enable = true;
     };
@@ -61,12 +64,12 @@
         enable = true;
       };
     };
+    nscd.enableNsncd = false;
     openssh = {
       enable = true;
     };
-    nscd.enableNsncd = false;
     xserver = {
-      enable = false;
+      #enable = true;
     };
   };
   systemd.shutdownRamfs.enable = false;
