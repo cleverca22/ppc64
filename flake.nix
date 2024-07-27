@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:cleverca22/nixpkgs/ugly-test";
+    nixpkgs.url = "github:cleverca22/nixpkgs/systemd-fixes";
     linux = {
       url = "github:rwf93/linux/xenon-6.5";
       flake = false;
@@ -21,7 +21,7 @@
   in {
     packages.powerpc64-linux = {
       inherit (p) debootstrap screen gnupg python3 nix systemd xterm;
-      inherit (p.xorg) xorgserver;
+      inherit (p.xorg) xorgserver xvfb;
       linux = (p.buildLinux {
         src = linux;
         version = "6.5.0-xenon";
@@ -58,7 +58,7 @@
       };
     };
     hydraJobs.powerpc64-linux = {
-      inherit (self.packages.powerpc64-linux) nixos xterm xorgserver;
+      inherit (self.packages.powerpc64-linux) nixos xterm xorgserver xvfb;
     };
   };
 }
