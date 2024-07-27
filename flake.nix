@@ -6,6 +6,10 @@
       flake = false;
     };
   };
+  nixConfig = {
+    extra-substituters = [ "https://hydra.angeldsis.com/" ];
+    extra-trusted-public-keys = [ "hydra.angeldsis.com-1:7s6tP5et6L8Y6sX7XGIwzX5bnLp00MtUQ/1C9t1IBGE=" ];
+  };
   outputs = { self, nixpkgs, linux }:
   let
     host = import nixpkgs { system = "x86_64-linux"; };
