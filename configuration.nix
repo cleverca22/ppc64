@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   imports = [
@@ -70,7 +70,8 @@
     };
     speechd.enable = false;
     xserver = {
-      #enable = true;
+      enable = true;
+      displayManager.xserverBin = lib.mkForce "${pkgs.xorg.xvfb}/bin/Xvfb";
     };
   };
   systemd.shutdownRamfs.enable = false;

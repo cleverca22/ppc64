@@ -1,3 +1,14 @@
+let
+  fun = pkg:
+  let
+    x = builtins.parseDrvName pkg.name;
+    blacklist = [
+      "mesa-powerpc64-unknown-linux-gnuabielfv2"
+      "libdrm-powerpc64-unknown-linux-gnuabielfv2"
+    ];
+  in !builtins.elem x.name blacklist;
+in
+
 self: super: {
   #util-linux = super.util-linux.override { systemdSupport = false; };
   #python3 = super.python3.overrideDerivation (old: {
@@ -12,4 +23,19 @@ self: super: {
   xterm = super.xterm.overrideDerivation (old: {
     configureFlags = old.configureFlags ++ [ "--disable-wide-chars" ];
   });
+  xorg = super.xorg // {
+    xorgserver = super.xorg.xvfb;
+    oldxorgserver = super.xorg.xorgserver.overrideAttrs (old: {
+      buildInputs = builtins.filter fun old.buildInputs;
+      configureFlags = old.configureFlags ++ [
+        "--disable-glx"
+        "--disable-dri"
+        "--disable-dri2"
+        "--disable-dri3"
+      ];
+    });
+    xvfb = super.xorg.xvfb.overrideAttrs (old: {
+      #configureFlags = old.configureFlags ++ [ "--enable-xorg" ];
+    });
+  };
 }
