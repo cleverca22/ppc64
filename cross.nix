@@ -1,5 +1,8 @@
 {
   config = "powerpc64-unknown-linux-gnuabielfv2";
+  rust = {
+    rustcTargetSpec = "powerpc64-unknown-linux-gnu";
+  };
   #config = "powerpc64-unknown-linux-gnu";
   linux-kernel = {
     name = "ppc xenon";
