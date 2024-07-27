@@ -21,6 +21,7 @@
   in {
     packages.powerpc64-linux = {
       inherit (p) debootstrap screen gnupg python3 nix systemd xterm;
+      inherit (p.xorg) xorgserver;
       linux = (p.buildLinux {
         src = linux;
         version = "6.5.0-xenon";
@@ -57,7 +58,7 @@
       };
     };
     hydraJobs.powerpc64-linux = {
-      inherit (self.packages.powerpc64-linux) nixos xterm;
+      inherit (self.packages.powerpc64-linux) nixos xterm xorgserver;
     };
   };
 }
