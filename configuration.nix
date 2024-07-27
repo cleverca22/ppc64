@@ -36,6 +36,7 @@
       fsType = "ext4";
     };
   };
+  hardware.graphics.enable = false;
   nixpkgs = {
     crossSystem = import ./cross.nix;
     overlays = [ (import ./overlay.nix) ];
