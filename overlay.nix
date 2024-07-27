@@ -9,4 +9,7 @@ self: super: {
   netcat = self.hello;
   makeModulesClosure = attrs: super.makeModulesClosure (attrs // { allowMissing = true; });
   llvm_18 = null; # needed by rust, which fails to build
+  xterm = super.xterm.overrideDerivation (old: {
+    configureFlags = old.configureFlags ++ [ "--disable-wide-chars" ];
+  });
 }
