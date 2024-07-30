@@ -3,10 +3,10 @@
 stdenv.mkDerivation {
   name = "fbdoom";
   src = fetchFromGitHub {
-    owner = "maximevince";
-    repo = "fbDOOM";
-    rev = "912c51c4d0e5aa899bb534e8c77227a556ff2377";
-    hash = "sha256-S4lI6nJfg/iqHfa6l34da1Av4L8sDwlWfg2Vd4vh2A0=";
+    owner = "Vali0004";
+    repo = "fbDOOM_BE";
+    rev = "db74b00e4fd2a25a202ddc5bbd47f0d3fd148648";
+    hash = "sha256-KHt98U+6mTszh1cimM2tFyzfuWqE5cL7/6ARIicUaLw=";
   };
   patches = [ ./fbdoom.patch ];
   postUnpack = ''
@@ -18,7 +18,7 @@ stdenv.mkDerivation {
     export NOSDL=1
   '';
   postPatch = ''
-    sed -i 's/input_tty.o/input_evdev.o i_alsa_sound.o/' Makefile
+    sed -i 's/input_tty.o/input_evdev.o/' Makefile
     cp -v ${./fbdoom-overlay}/* .
   '';
   enableParallelBuilding = true;

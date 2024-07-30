@@ -46,23 +46,22 @@ static const char ev_to_doom[] = {
 };
 
 void I_InitInput(void) {
+  int ret;
   fd0 = open("/dev/input/event0", O_RDWR | O_NONBLOCK);
   if (fd0 < 0) {
     perror("cant open event0");
+  } else {
+    ret = ioctl(fd0, EVIOCGRAB, (void*)1);
+    assert(ret == 0);
   }
-  assert(fd0 >= 0);
-
-  int ret = ioctl(fd0, EVIOCGRAB, (void*)1);
-  assert(ret == 0);
 
   fd1 = open("/dev/input/event1", O_RDWR | O_NONBLOCK);
   if (fd1 < 0) {
     perror("cant open event1");
+  } else {
+    ret = ioctl(fd1, EVIOCGRAB, (void*)1);
+    assert(ret == 0);
   }
-  assert(fd1 >= 0);
-
-  ret = ioctl(fd1, EVIOCGRAB, (void*)1);
-  assert(ret == 0);
 }
 
 int delta_x = 0;
@@ -71,6 +70,8 @@ uint8_t mouse_bits = 0;
 uint8_t old_mouse_bits = 0;
 
 void check_for_events(int fd) {
+  if (fd < 0) return;
+
   struct input_event ev[32];
   int rd = read(fd, ev, sizeof(ev));
   for (int j=0; j < rd / ((signed int)sizeof(struct input_event)); j++) {
