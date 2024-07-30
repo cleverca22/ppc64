@@ -43,6 +43,13 @@ static const char ev_to_doom[] = {
   [KEY_SPACE] = KEY_USE,
   [KEY_E] = KEY_USE,
   [KEY_SLASH] = '/',
+  [BTN_SOUTH] = KEY_ENTER,
+  [BTN_EAST] = KEY_ESCAPE,
+  [BTN_WEST] = 'y',
+  [BTN_TRIGGER_HAPPY1] = KEY_LEFTARROW,
+  [BTN_TRIGGER_HAPPY2] = KEY_RIGHTARROW,
+  [BTN_TRIGGER_HAPPY3] = KEY_UPARROW,
+  [BTN_TRIGGER_HAPPY4] = KEY_DOWNARROW,
 };
 
 void I_InitInput(void) {
@@ -66,6 +73,7 @@ void I_InitInput(void) {
 
 int delta_x = 0;
 int delta_y = 0;
+int abs_y = 0;
 uint8_t mouse_bits = 0;
 uint8_t old_mouse_bits = 0;
 
@@ -110,7 +118,7 @@ void check_for_events(int fd) {
         event.type = ev_mouse;
         event.data1 = mouse_bits;
         event.data2 = delta_x * 4;
-        event.data3 = delta_y;
+        event.data3 = delta_y + abs_y;
         event.data3 = 0; // no y movement!
         D_PostEvent(&event);
         delta_x = 0;
@@ -118,6 +126,21 @@ void check_for_events(int fd) {
         old_mouse_bits = mouse_bits;
       }
     } else if (ev[j].type == EV_ABS) { // mouse
+      if (ev[j].code == ABS_Y) {
+        abs_y = ev[j].value;
+      } else if (ev[j].code == ABS_RZ) {
+        if (ev[j].value > 0) {
+          event.type = ev_keydown;
+          event.data1 = KEY_FIRE;
+          event.data2 = event.data1;
+          D_PostEvent(&event);
+        } else {
+          event.type = ev_keyup;
+          event.data1 = KEY_FIRE;
+          event.data2 = event.data1;
+          D_PostEvent(&event);
+        }
+      }
     } else if (ev[j].type == EV_REL) { // mouse
       if (ev[j].code == REL_X) delta_x = ev[j].value;
       else if (ev[j].code == REL_Y) delta_y = ev[j].value;

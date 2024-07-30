@@ -27,6 +27,8 @@
     pciutils
     screen
     usbutils
+    evtest
+    #gdb
     (pkgs.callPackage ./fbdoom.nix {})
   ];
   fileSystems = {
