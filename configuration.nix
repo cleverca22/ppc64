@@ -49,10 +49,10 @@
     defaultGateway = "10.0.0.1";
     firewall.enable = false;
     hostId = "aacc9931";
-    interfaces.enp0s7 = {
+    interfaces.eth0 = {
       ipv4.addresses = [
         {
-          address = "10.0.0.206";
+          address = "10.0.0.204";
           prefixLength = 24;
         }
       ];
