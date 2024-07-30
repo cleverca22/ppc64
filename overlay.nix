@@ -23,8 +23,8 @@ self: super: {
   xterm = super.xterm.overrideDerivation (old: {
     configureFlags = old.configureFlags ++ [ "--disable-wide-chars" ];
   });
-  xorg = super.xorg // {
-    xorgserver = super.xorg.xvfb;
+  xorg = super.xorg.overrideScope (xself: xsuper: {
+    xorgserver = xsuper.xvfb;
     oldxorgserver = super.xorg.xorgserver.overrideAttrs (old: {
       buildInputs = builtins.filter fun old.buildInputs;
       configureFlags = old.configureFlags ++ [
@@ -34,9 +34,10 @@ self: super: {
         "--disable-dri3"
       ];
     });
-    xvfb = super.xorg.xvfb.overrideAttrs (old: {
+    xvfb = xsuper.xvfb.overrideAttrs (old: {
       #configureFlags = old.configureFlags ++ [ "--enable-xorg" ];
     });
-  };
-  systemd = super.systemd.override { withIptables = false; };
+    xf86inputevdev = super.hello;
+  });
+  #systemd = super.systemd.override { withIptables = false; };
 }

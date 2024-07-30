@@ -37,6 +37,9 @@
       fsType = "ext4";
     };
   };
+  fonts = {
+    enableDefaultPackages = false;
+  };
   hardware.graphics.enable = false;
   nixpkgs = {
     crossSystem = import ./cross.nix;
@@ -68,6 +71,7 @@
         enable = true;
       };
     };
+    libinput.enable = false;
     nscd.enableNsncd = false;
     openssh = {
       enable = true;
@@ -75,12 +79,14 @@
     speechd.enable = false;
     xserver = {
       enable = true;
+      excludePackages = [ pkgs.xorg.xf86inputevdev.out ];
       desktopManager.xfce.enable = false;
       displayManager = {
         lightdm.enable = false;
         startx.enable = true;
         xserverBin = lib.mkForce "${pkgs.xorg.xvfb}/bin/Xvfb";
       };
+      videoDrivers = [];
     };
   };
   systemd.shutdownRamfs.enable = false;
