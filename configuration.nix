@@ -27,6 +27,7 @@
     pciutils
     screen
     usbutils
+    (pkgs.callPackage ./fbdoom.nix {})
   ];
   fileSystems = {
     "/boot" = {
