@@ -38,4 +38,5 @@ self: super: {
       #configureFlags = old.configureFlags ++ [ "--enable-xorg" ];
     });
   };
+  systemd = super.systemd.override { withIptables = false; };
 }

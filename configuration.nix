@@ -19,6 +19,7 @@
       "video=xenonfb"
     ];
     #supportedFilesystems = [ "zfs" ];
+    plymouth.enable = false;
   };
   documentation.enable = false;
   environment.systemPackages = with pkgs; [
@@ -58,6 +59,8 @@
       enable = true;
     };
   };
+  programs.ssh.enableAskPassword = false;
+  security.polkit.enable = false;
   services = {
     avahi = {
       enable = true;
@@ -72,7 +75,12 @@
     speechd.enable = false;
     xserver = {
       enable = true;
-      displayManager.xserverBin = lib.mkForce "${pkgs.xorg.xvfb}/bin/Xvfb";
+      desktopManager.xfce.enable = false;
+      displayManager = {
+        lightdm.enable = false;
+        startx.enable = true;
+        xserverBin = lib.mkForce "${pkgs.xorg.xvfb}/bin/Xvfb";
+      };
     };
   };
   systemd.shutdownRamfs.enable = false;
