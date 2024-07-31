@@ -57,6 +57,14 @@
         contents = [];
       };
     };
+    packages.x86_64-linux = let
+      pkgs = import nixpkgs {
+        overlays = [ (import ./overlay.nix) ];
+        system = "x86_64-linux";
+      };
+    in {
+      inherit (pkgs.xorg) xorgserver;
+    };
     hydraJobs.powerpc64-linux = {
       inherit (self.packages.powerpc64-linux) nixos xterm xorgserver xvfb;
     };

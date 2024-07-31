@@ -4,7 +4,8 @@ let
     x = builtins.parseDrvName pkg.name;
     blacklist = [
       "mesa-powerpc64-unknown-linux-gnuabielfv2"
-      "libdrm-powerpc64-unknown-linux-gnuabielfv2"
+      #"libdrm-powerpc64-unknown-linux-gnuabielfv2"
+      "mesa"
     ];
   in !builtins.elem x.name blacklist;
 in
@@ -23,15 +24,19 @@ self: super: {
   xterm = super.xterm.overrideDerivation (old: {
     configureFlags = old.configureFlags ++ [ "--disable-wide-chars" ];
   });
+  mesa = super.stdenv.mkDerivation {
+    name = "mesa";
+  };
   xorg = super.xorg.overrideScope (xself: xsuper: {
-    xorgserver = xsuper.xvfb;
-    oldxorgserver = super.xorg.xorgserver.overrideAttrs (old: {
+    #xorgserver = xsuper.xvfb;
+    xorgserver = super.xorg.xorgserver.overrideAttrs (old: {
       buildInputs = builtins.filter fun old.buildInputs;
       configureFlags = old.configureFlags ++ [
         "--disable-glx"
         "--disable-dri"
         "--disable-dri2"
         "--disable-dri3"
+        "--disable-glamor"
       ];
     });
     xvfb = xsuper.xvfb.overrideAttrs (old: {
