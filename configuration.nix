@@ -85,8 +85,8 @@
       excludePackages = [ pkgs.xorg.xf86inputevdev.out ];
       desktopManager.xfce.enable = false;
       displayManager = {
-        lightdm.enable = true;
-        #startx.enable = true;
+        lightdm.enable = false;
+        startx.enable = true;
         #xserverBin = lib.mkForce "${pkgs.xorg.xvfb}/bin/Xvfb";
       };
       #videoDrivers = [];
