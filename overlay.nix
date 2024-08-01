@@ -34,7 +34,7 @@ self: super: {
       configureFlags = old.configureFlags ++ [
         "--disable-glx"
         "--disable-dri"
-        "--disable-dri2"
+        #"--disable-dri2"
         "--disable-dri3"
         "--disable-glamor"
       ];
@@ -42,7 +42,6 @@ self: super: {
     xvfb = xsuper.xvfb.overrideAttrs (old: {
       #configureFlags = old.configureFlags ++ [ "--enable-xorg" ];
     });
-    xf86inputevdev = super.hello;
   });
   #systemd = super.systemd.override { withIptables = false; };
 }

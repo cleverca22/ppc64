@@ -82,14 +82,11 @@
     speechd.enable = false;
     xserver = {
       enable = true;
-      excludePackages = [ pkgs.xorg.xf86inputevdev.out ];
       desktopManager.xfce.enable = false;
       displayManager = {
         lightdm.enable = false;
         startx.enable = true;
-        #xserverBin = lib.mkForce "${pkgs.xorg.xvfb}/bin/Xvfb";
       };
-      #videoDrivers = [];
     };
   };
   systemd.shutdownRamfs.enable = false;
