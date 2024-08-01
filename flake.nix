@@ -21,7 +21,7 @@
   in {
     legacyPackages.powerpc64-linux = import nixpkgs { system = "powerpc64-linux"; overlays = [ (import ./overlay.nix) ]; };
     packages.powerpc64-linux = {
-      inherit (p) debootstrap screen gnupg python3 nix systemd xterm;
+      inherit (p) debootstrap screen gnupg python3 nix systemd xterm mesa;
       inherit (p.xorg) xorgserver xvfb;
       linux = (p.buildLinux {
         src = linux;
@@ -67,7 +67,7 @@
       inherit (pkgs.xorg) xorgserver;
     };
     hydraJobs.powerpc64-linux = {
-      inherit (self.packages.powerpc64-linux) nixos xterm xorgserver xvfb;
+      inherit (self.packages.powerpc64-linux) nixos xterm xorgserver xvfb mesa;
       inherit (p) lightdm sx xpra sddm;
       inherit (p.gnome) gdm;
     };
