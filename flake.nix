@@ -68,7 +68,7 @@
     };
     hydraJobs.powerpc64-linux = {
       inherit (self.packages.powerpc64-linux) nixos xterm xorgserver xvfb mesa;
-      inherit (p) lightdm sx xpra sddm;
+      inherit (p) lightdm sx xpra sddm i3;
       inherit (p.gnome) gdm;
     };
   };
