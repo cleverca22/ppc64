@@ -30,6 +30,10 @@
     evtest
     #gdb
     (pkgs.callPackage ./fbdoom.nix {})
+    sysstat
+    git
+    speedtest-cli
+    iperf3
   ];
   fileSystems = {
     "/boot" = {

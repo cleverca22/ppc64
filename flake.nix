@@ -19,6 +19,7 @@
       overlays = [ (import ./overlay.nix) ];
     };
   in {
+    legacyPackages.powerpc64-linux = import nixpkgs { system = "powerpc64-linux"; overlays = [ (import ./overlay.nix) ]; };
     packages.powerpc64-linux = {
       inherit (p) debootstrap screen gnupg python3 nix systemd xterm;
       inherit (p.xorg) xorgserver xvfb;

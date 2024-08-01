@@ -24,6 +24,7 @@ self: super: {
   xterm = super.xterm.overrideDerivation (old: {
     configureFlags = old.configureFlags ++ [ "--disable-wide-chars" ];
   });
+  nix = super.nix.override { enableDocumentation = false; };
   mesa = super.stdenv.mkDerivation {
     name = "mesa";
   };
