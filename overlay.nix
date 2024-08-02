@@ -51,4 +51,10 @@ self: super: {
     nativeBuildInputs = builtins.filter fun old.nativeBuildInputs;
     outputs = builtins.filter (x: x!="spirv2dxil") old.outputs;
   });
+  libtoxcore = super.libtoxcore.override {
+    stdenv = super.stdenv // {isAarch32=true;};
+  };
+  toxvpn = super.toxvpn.overrideDerivation (old: {
+    postInstall ="true";
+  });
 }
