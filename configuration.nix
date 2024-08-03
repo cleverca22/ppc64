@@ -69,8 +69,13 @@
       enable = true;
     };
   };
-  programs.ssh.enableAskPassword = false;
-  #security.polkit.enable = false;
+  programs = {
+    git = {
+      enable = true;
+    };
+    ssh.enableAskPassword = false;
+  };
+  security.polkit.enable = false;
   services = {
     avahi = {
       enable = true;
@@ -82,14 +87,32 @@
     nscd.enableNsncd = false;
     openssh = {
       enable = true;
+      passwordAuthentication = false;
     };
     speechd.enable = false;
+    toxvpn = {
+      enable = true;
+      localip = "10.42.1.5";
+    };
     xserver = {
       enable = true;
-      desktopManager.xfce.enable = false;
+      desktopManager = {
+        xterm.enable = false;
+        xfce.enable = false;
+      };
       displayManager = {
+        #defaultSession = "none+i3";
         lightdm.enable = false;
-        startx.enable = true;
+        #startx.enable = true;
+      };
+      windowManager.i3 = {
+        #enable = true;
+        extraPackages = with pkgs; [
+          dmenu
+          i3status
+          i3lock
+          #i3blocks
+        ];
       };
     };
   };

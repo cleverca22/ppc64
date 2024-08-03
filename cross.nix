@@ -19,6 +19,7 @@
       MAC80211 y
       RTL8XXXU y
       USB y
+      TUN y
       VFAT_FS y
       WIRELESS y
       WLAN y
