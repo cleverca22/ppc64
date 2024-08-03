@@ -1,0 +1,43 @@
+turn off all LED's
+echo -en \\x99\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00 > /dev/smc
+
+all messages to the SMC are a 16 byte packet, and the reply is also 16 bytes
+the first byte is a command code
+
+xenon_smc_message() in linux, is used to send messages within the kernel
+
+0x04, read RTC, returns a 40bit int, msec since nov 15th, 2001?
+
+0x07, reads the temp
+  bytes 1-8 return 4 temp readings?
+  byte 1/2 are a 16bit int
+  3/4
+  5/6
+  7/8
+  each 16bit int, goes thru `int * 1000 / 256` to convert to a temp
+
+0x11, HANA? drivers/char/xenon_ana.c
+
+0x82 0x01 0x00 0x00, poweroff
+0x82 0x04 0x30 0x00, reboot
+0x85, set RTC
+0x89, set gpu fan
+  byte 1, 7bit speed, with bit7 set
+0x94, set cpu fan
+  byte 1, 7bit speed, with bit7 set
+
+0x99: LED_CONTROL
+  byte 1, 0x1=SET
+  byte 2, red/green LED's
+    low nibble, red?
+    high nibble, green?
+    bit 0, top left
+    bit 1, top right
+    bit 2, bottom left
+    bit 3, bottom right
+
+[root@nixbox360:/sys/devices/platform/xenon-hwmon]# cat cpu_temp
+[root@nixbox360:/sys/devices/platform/xenon-hwmon]# cat gpu_temp
+[root@nixbox360:/sys/devices/platform/xenon-hwmon]# cat gpu_fan_speed
+[root@nixbox360:/sys/devices/platform/xenon-hwmon]# cat cpu_fan_speed
+
