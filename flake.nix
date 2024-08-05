@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:cleverca22/nixpkgs/systemd-fixes";
+    nixpkgs.url = "github:cleverca22/nixpkgs/ugly-test";
     linux = {
       url = "github:rwf93/linux/xenon-6.5";
       flake = false;
@@ -21,7 +21,12 @@
   in {
     legacyPackages.powerpc64-linux = import nixpkgs { system = "powerpc64-linux"; overlays = [ (import ./overlay.nix) ]; };
     packages.powerpc64-linux = {
+      gccgo = p.buildPackages.gccgo.cc.overrideAttrs (old: {
+        #outputs = [ "out" "man" "info" "lib" ];
+        preInstall = "";
+      });
       inherit (p) debootstrap screen gnupg python3 nix systemd xterm mesa;
+      utils = p.callPackage ./utils.nix {};
       inherit (p.xorg) xorgserver xvfb;
       linux = (p.buildLinux {
         src = linux;

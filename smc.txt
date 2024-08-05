@@ -15,19 +15,29 @@ xenon_smc_message() in linux, is used to send messages within the kernel
   5/6
   7/8
   each 16bit int, goes thru `int * 1000 / 256` to convert to a temp
-
-0x11, HANA? drivers/char/xenon_ana.c
+0x0f, libxenon, xenon_smc_read_avpack()
+0x11
+  HANA? drivers/char/xenon_ana.c
+  HDMI EDID i2c is also on hana, libxenon xenon_smc_i2c_ddc_lock()
 
 0x82 0x01 0x00 0x00, poweroff
 0x82 0x04 0x30 0x00, reboot
+0x83, ir codes sent from the SMC
+  byte 1, 63/64/65, dvd drive state
 0x85, set RTC
+0x88, set fan algo
+  byte 1, algo#
 0x89, set gpu fan
   byte 1, 7bit speed, with bit7 set
+0x8c, set power led, xenon_smc_set_power_led()
+  byte 1, override, 0/1 OR state, 0/2
+  byte 2, start animation
+0x8d 0x01 0x01, libxenon xenon_sound_init()
 0x94, set cpu fan
   byte 1, 7bit speed, with bit7 set
 
 0x99: LED_CONTROL
-  byte 1, 0x1=SET
+  byte 1, 0x1=SET, libxenon calls it override, xenon_smc_set_led()
   byte 2, red/green LED's
     low nibble, red?
     high nibble, green?

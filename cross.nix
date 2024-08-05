@@ -17,9 +17,10 @@
       INPUT_EVDEV y
       LEDS_CLASS y
       MAC80211 y
+      PERF_EVENTS y
       RTL8XXXU y
-      USB y
       TUN y
+      USB y
       VFAT_FS y
       WIRELESS y
       WLAN y

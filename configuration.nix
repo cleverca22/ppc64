@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, config, lib, ... }:
 
 {
   imports = [
@@ -27,6 +27,7 @@
     pciutils
     screen
     usbutils
+    config.boot.kernelPackages.perf
     evtest
     #gdb
     (pkgs.callPackage ./fbdoom.nix {})
@@ -89,13 +90,14 @@
       enable = true;
       passwordAuthentication = false;
     };
+    prometheus.exporters.node.enable = true;
     speechd.enable = false;
     toxvpn = {
       enable = true;
       localip = "10.42.1.5";
     };
     xserver = {
-      enable = true;
+      enable = false;
       desktopManager = {
         xterm.enable = false;
         xfce.enable = false;
