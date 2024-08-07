@@ -10,11 +10,15 @@
     autoModules = false;
     baseConfig = "xenon_defconfig";
     extraConfig = ''
+      AUTOFS_FS y
       CFG80211 y
       FAT_FS y
+      FUSE_FS y
       FW_LOADER_COMPRESS y
       FW_LOADER_COMPRESS_ZSTD y
       INPUT_EVDEV y
+      INPUT_JOYDEV y
+      JOYSTICK_XPAD y
       LEDS_CLASS y
       MAC80211 y
       PERF_EVENTS y
