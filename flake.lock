@@ -19,11 +19,11 @@
     "libxenon": {
       "flake": false,
       "locked": {
-        "lastModified": 1723663721,
-        "narHash": "sha256-5RbnH+im1RhU2yU/KpDOr6iOXcbrltbWBSTh5GfY9lw=",
+        "lastModified": 1723674870,
+        "narHash": "sha256-KRRNNwcdJt6lrek5hE6qoSC2Kym7k6M4lZmv0AMg4DY=",
         "owner": "cleverca22",
         "repo": "libxenon",
-        "rev": "2cd6773747e1c252f6037da2bac9f6dd0f115dc4",
+        "rev": "4fcf990a117b6aed4deee167cd62661c99cc25a3",
         "type": "github"
       },
       "original": {
@@ -77,11 +77,11 @@
     "xell": {
       "flake": false,
       "locked": {
-        "lastModified": 1723664405,
-        "narHash": "sha256-5lc4uwok4qQ9XsOVFtdKi6cGnkPU1ffqgfAEm/XKMg8=",
+        "lastModified": 1723675360,
+        "narHash": "sha256-3t2Wm6G0x7RF+bLOSRtoGZJmC0V6aaIBKKyNU0j17AI=",
         "owner": "cleverca22",
         "repo": "xell-reloaded",
-        "rev": "8b0a879b759b1e6ab3d480c21c4c8296f2dab401",
+        "rev": "add9a7c337db1437428807699a11c08ef6b62ac4",
         "type": "github"
       },
       "original": {
