@@ -1,5 +1,37 @@
 {
   "nodes": {
+    "libfat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723662818,
+        "narHash": "sha256-2OAFk6M2naMufDYExGj6vDgZiYoTe4I3x22MQr811fI=",
+        "owner": "cleverca22",
+        "repo": "libfat",
+        "rev": "61d5af5607c2a797aeea56c3728531953cd64b0f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cleverca22",
+        "repo": "libfat",
+        "type": "github"
+      }
+    },
+    "libxenon": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723663721,
+        "narHash": "sha256-5RbnH+im1RhU2yU/KpDOr6iOXcbrltbWBSTh5GfY9lw=",
+        "owner": "cleverca22",
+        "repo": "libxenon",
+        "rev": "2cd6773747e1c252f6037da2bac9f6dd0f115dc4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cleverca22",
+        "repo": "libxenon",
+        "type": "github"
+      }
+    },
     "linux": {
       "flake": false,
       "locked": {
@@ -35,8 +67,27 @@
     },
     "root": {
       "inputs": {
+        "libfat": "libfat",
+        "libxenon": "libxenon",
         "linux": "linux",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "xell": "xell"
+      }
+    },
+    "xell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723664405,
+        "narHash": "sha256-5lc4uwok4qQ9XsOVFtdKi6cGnkPU1ffqgfAEm/XKMg8=",
+        "owner": "cleverca22",
+        "repo": "xell-reloaded",
+        "rev": "8b0a879b759b1e6ab3d480c21c4c8296f2dab401",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cleverca22",
+        "repo": "xell-reloaded",
+        "type": "github"
       }
     }
   },
