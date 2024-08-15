@@ -77,11 +77,11 @@
     "xell": {
       "flake": false,
       "locked": {
-        "lastModified": 1723675360,
-        "narHash": "sha256-3t2Wm6G0x7RF+bLOSRtoGZJmC0V6aaIBKKyNU0j17AI=",
+        "lastModified": 1723680492,
+        "narHash": "sha256-e7gBI6GKyuT3mG6AxrJM3e2oKv/PVevS4a5zP374+Cg=",
         "owner": "cleverca22",
         "repo": "xell-reloaded",
-        "rev": "add9a7c337db1437428807699a11c08ef6b62ac4",
+        "rev": "2792c69ed1a85a37f72c095582458f70121a9ae4",
         "type": "github"
       },
       "original": {
