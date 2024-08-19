@@ -50,7 +50,12 @@
   fonts = {
     enableDefaultPackages = false;
   };
-  hardware.graphics.enable = false;
+  hardware = {
+    graphics.enable = false;
+    firmware = with pkgs; [
+      firmwareLinuxNonfree
+    ];
+  };
   nixpkgs = {
     crossSystem = import ./cross.nix;
     overlays = [ (import ./overlay.nix) ];
