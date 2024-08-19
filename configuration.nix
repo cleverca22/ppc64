@@ -13,7 +13,7 @@
     kernelPackages = pkgs.linuxXenonPackages;
     kernelParams = [
       "coherent_pool=16M"
-      "console=tty0"
+      "console=tty1"
       "console=ttyS0,115200"
       "nokaslr"
       "video=xenonfb"
@@ -40,10 +40,12 @@
   ];
   fileSystems = {
     "/boot" = {
-      device = "UUID=4AA3-EF9F";
+      #device = "UUID=4AA3-EF9F";
+      device = "UUID=5521-7907";
     };
     "/" = {
-      device = "UUID=387e8327-4894-4aa1-8a88-b3f3a663bac2";
+      #device = "UUID=387e8327-4894-4aa1-8a88-b3f3a663bac2";
+      device = "LABEL=NIXOS_ROOT";
       fsType = "ext4";
     };
   };
@@ -59,6 +61,11 @@
   nixpkgs = {
     crossSystem = import ./cross.nix;
     overlays = [ (import ./overlay.nix) ];
+  };
+  nix = {
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
   };
   networking = {
     defaultGateway = "10.0.0.1";

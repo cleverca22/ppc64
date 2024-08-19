@@ -8,7 +8,7 @@ in {
     imports = [
       ./configuration.nix
     ];
-    deployment.targetHost = "10.0.0.204";
+    deployment.targetHost = "10.0.0.95";
     deployment.targetUser = "root";
     nixpkgs.overlays = [
       (self': super: {
