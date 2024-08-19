@@ -33,8 +33,10 @@
     (pkgs.callPackage ./fbdoom.nix {})
     sysstat
     git
+    dtc
     speedtest-cli
     iperf3
+    pv
   ];
   fileSystems = {
     "/boot" = {
@@ -90,7 +92,9 @@
       enable = true;
       passwordAuthentication = false;
     };
-    prometheus.exporters.node.enable = true;
+    prometheus.exporters.node = {
+      enable = false;
+    };
     speechd.enable = false;
     toxvpn = {
       enable = true;
