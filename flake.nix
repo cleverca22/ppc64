@@ -110,10 +110,10 @@
         inherit (p) lightdm sx sddm i3 toxvpn;
         qemu-user = p.qemu.override {
           smartcardSupport = false;
-          spiceSupport = false;
+          spiceSupport = true;
           openGLSupport = false;
           virglSupport = false;
-          vncSupport = false;
+          vncSupport = true;
           gtkSupport = false;
           sdlSupport = false;
           alsaSupport = false;
@@ -125,7 +125,7 @@
           tpmSupport = false;
           capstoneSupport = false;
           enableDocs = false;
-          hostCpuTargets = [ "x86_64-linux-user" ];
+          hostCpuTargets = [ "x86_64-linux-user" "x86_64" ];
         };
         inherit (p.gnome) gdm;
       };
