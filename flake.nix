@@ -114,7 +114,7 @@
           capstoneSupport = false;
           enableDocs = false;
           gtkSupport = false;
-          hostCpuTargets = [ "x86_64-linux-user" "x86_64" ];
+          hostCpuTargets = [ "x86_64-linux-user" "i386-softmmu" "x86_64-softmmu" ];
           jackSupport = false;
           openGLSupport = false;
           pipewireSupport = false;
@@ -123,7 +123,7 @@
           seccompSupport = false;
           smartcardSupport = false;
           smbdSupport = false;
-          spiceSupport = true;
+          spiceSupport = false;
           tpmSupport = false;
           virglSupport = false;
           vncSupport = true;
