@@ -108,6 +108,25 @@
       powerpc64-linux = {
         inherit (self.packages.powerpc64-linux) nixos xterm xorgserver xvfb mesa;
         inherit (p) lightdm sx sddm i3 toxvpn;
+        qemu-user = p.qemu.override {
+          smartcardSupport = false;
+          spiceSupport = false;
+          openGLSupport = false;
+          virglSupport = false;
+          vncSupport = false;
+          gtkSupport = false;
+          sdlSupport = false;
+          alsaSupport = false;
+          pulseSupport = false;
+          pipewireSupport = false;
+          jackSupport = false;
+          smbdSupport = false;
+          seccompSupport = false;
+          tpmSupport = false;
+          capstoneSupport = false;
+          enableDocs = false;
+          hostCpuTargets = [ "x86_64-linux-user" ];
+        };
         inherit (p.gnome) gdm;
       };
       powerpc-none-eabi = {
