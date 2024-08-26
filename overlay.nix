@@ -5,8 +5,10 @@ let
     blacklist = [
       #"mesa-powerpc64-unknown-linux-gnuabielfv2"
       "powerpc64-unknown-linux-gnuabielfv2-rustc-wrapper"
+      "rustc-wrapper"
       #"libdrm-powerpc64-unknown-linux-gnuabielfv2"
       "mesa"
+      "rust-bindgen"
     ];
     hit = builtins.elem x.name blacklist;
   in if (pkg ? name) then !hit else true;
@@ -38,6 +40,15 @@ self: super: {
   oldmesa = super.stdenv.mkDerivation {
     name = "mesa";
   };
+  #rustc = super.stdenv.mkDerivation {
+  #  name = "rustc";
+  #};
+  #rust-bindgen = super.stdenv.mkDerivation {
+  #  name = "rustc-bindgen";
+  #};
+  #rust-cbindgen = super.stdenv.mkDerivation {
+  #  name = "rust-cbindgen";
+  #};
   mesa = (super.mesa.override {
     vulkanDrivers = [ "swrast" ];
     galliumDrivers = [ "swrast" "zink" ];
