@@ -12,6 +12,16 @@
       label = "NIXOS_ROOT";
     };
   };
+  users = {
+    users = {
+      vali = {
+        extraGroups = [ "wheel" ];
+        initialPassword = "hunter2";
+        isNormalUser = true;
+        uid = 1000;
+      };
+    };
+  };
   services = {
     nscd.enableNsncd = false;
   };
