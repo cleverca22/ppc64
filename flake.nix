@@ -143,6 +143,7 @@
         label = "NIXOS_ROOT";
         copyChannel = false;
         config = qemu-eval.config;
+        format = "qcow2";
       };
     in {
       inherit (pkgs.xorg) xorgserver;
@@ -152,7 +153,7 @@
         ls -lh ${ext4image}
         ls -lh ${qemu-eval.system}
         if ! test -e test.qcow2; then
-          qemu-img create -f qcow2 -b ${ext4image}/nixos.img -F raw test.qcow2
+          qemu-img create -f qcow2 -b ${ext4image}/nixos.qcow2 -F qcow2 test.qcow2
           nix-store -r ${ext4image} --add-root rootfs.root --indirect
         fi
         qemu-system-ppc64 -kernel ${qemu-eval.system}/kernel -initrd ${qemu-eval.system}/initrd -serial stdio -M mac99,via=pmu -m 2g -net user -device virtio-net \
