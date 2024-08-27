@@ -25,6 +25,10 @@
       crossSystem = import ./cross.nix;
       overlays = [ (import ./overlay.nix) ];
     };
+    nativeppc64 = import nixpkgs {
+      localSystem = import ./cross.nix;
+      overlays = [ (import ./overlay.nix) ];
+    };
     overlay32 = self: super: {
       libxenon = self.callPackage libxenon {};
       fat = self.callPackage libfat {};
@@ -114,6 +118,11 @@
           target = "vmlinux";
           autoModules = false;
           kernelInstallTarget = "install";
+          extraConfig = ''
+            VIRTIO_BLK y
+            VIRTIO_NET y
+            VIRTIO_PCI y
+          '';
         };
         kernelInstallTarget = "install";
       };
@@ -147,24 +156,27 @@
       };
     in {
       inherit (pkgs.xorg) xorgserver;
+      config = g5linux.configfile;
       start-vm = pkgs.writeShellScriptBin "start-vm" ''
         export PATH=${pkgs.lib.makeBinPath (with pkgs2; [ qemu ])}:$PATH
-        echo ${ext4image}
-        ls -lh ${ext4image}
-        ls -lh ${qemu-eval.system}
         if ! test -e test.qcow2; then
           qemu-img create -f qcow2 -b ${ext4image}/nixos.qcow2 -F qcow2 test.qcow2
           nix-store -r ${ext4image} --add-root rootfs.root --indirect
         fi
-        qemu-system-ppc64 -kernel ${qemu-eval.system}/kernel -initrd ${qemu-eval.system}/initrd -serial stdio -M mac99,via=pmu -m 2g -net user -device virtio-net \
-          -drive index=0,id=drive1,file=test.qcow2,cache=writeback,werror=report \
+        qemu-system-ppc64 -kernel ${qemu-eval.system}/kernel -initrd ${qemu-eval.system}/initrd -serial stdio -M mac99,via=pmu -m 2g \
+          -net nic,model=virtio \
+          -net tap,ifname=tap0,script=/run/current-system/sw/bin/true \
+          -drive index=0,id=drive1,file=test.qcow2,cache=writeback,werror=report,if=virtio \
           -append "init=${qemu-eval.system}/init $(cat ${qemu-eval.system}/kernel-params)"
+
+          #-net user \
       '';
     };
     hydraJobs = {
       powerpc64-linux = {
         inherit (self.packages.powerpc64-linux) nixos xterm xorgserver xvfb mesa;
-        inherit (p) lightdm sx sddm i3 toxvpn;
+        inherit (p) lightdm sx sddm toxvpn;
+        inherit (nativeppc64) i3;
         qemu-user = p.qemu.override {
           alsaSupport = false;
           canokeySupport = false;

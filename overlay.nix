@@ -9,6 +9,7 @@ let
       #"libdrm-powerpc64-unknown-linux-gnuabielfv2"
       "mesa"
       "rust-bindgen"
+      "rust-cbindgen"
     ];
     hit = builtins.elem x.name blacklist;
   in if (pkg ? name) then !hit else true;
@@ -52,7 +53,7 @@ self: super: {
   mesa = (super.mesa.override {
     vulkanDrivers = [ "swrast" ];
     galliumDrivers = [ "swrast" "zink" ];
-  }).overrideDerivation (old: {
+  }).overrideAttrs (old: {
     mesonFlags = (self.lib.filter fun2 old.mesonFlags) ++ [
       "-Dgallium-vdpau=disabled"
       "-Dgallium-va=disabled"
@@ -60,6 +61,7 @@ self: super: {
       "-Dgallium-nine=false"
     ];
     nativeBuildInputs = builtins.filter fun old.nativeBuildInputs;
+    buildInputs = builtins.filter fun old.buildInputs;
     outputs = builtins.filter (x: x!="spirv2dxil") old.outputs;
   });
   libtoxcore = super.libtoxcore.override {
