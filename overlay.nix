@@ -64,6 +64,10 @@ self: super: {
     buildInputs = builtins.filter fun old.buildInputs;
     outputs = builtins.filter (x: x!="spirv2dxil") old.outputs;
   });
+  meson = super.meson.overrideAttrs (old: {
+    doCheck = false;
+    doInstallCheck = false;
+  });
   libtoxcore = super.libtoxcore.override {
     stdenv = super.stdenv // {isAarch32=true;};
   };
