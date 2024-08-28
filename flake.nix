@@ -175,8 +175,8 @@
     hydraJobs = {
       powerpc64-linux = {
         inherit (self.packages.powerpc64-linux) nixos xterm xorgserver xvfb mesa;
-        inherit (p) lightdm sx sddm toxvpn;
-        inherit (nativeppc64) i3 hello;
+        #inherit (p) lightdm sx sddm toxvpn;
+        inherit (nativeppc64) i3 hello lightdm sx sddm toxvpn nix;
         qemu-user = p.qemu.override {
           alsaSupport = false;
           canokeySupport = false;
