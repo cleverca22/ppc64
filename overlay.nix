@@ -10,6 +10,7 @@ let
       "mesa"
       "rust-bindgen"
       "rust-cbindgen"
+      "valgrind"
     ];
     hit = builtins.elem x.name blacklist;
   in if (pkg ? name) then !hit else true;
@@ -30,10 +31,11 @@ self: super: {
   #    "${self.path}/pkgs/development/interpreters/python/cpython/3.12/0001-Fix-build-with-_PY_SHORT_FLOAT_REPR-0.patch"
   #  ] ++ old.patches;
   #});
+  libdrm = super.libdrm.override { withValgrind = false; };
   libressl = self.hello;
-  netcat = self.hello;
-  makeModulesClosure = attrs: super.makeModulesClosure (attrs // { allowMissing = true; });
   llvm_18 = null; # needed by rust, which fails to build
+  makeModulesClosure = attrs: super.makeModulesClosure (attrs // { allowMissing = true; });
+  netcat = self.hello;
   xterm = super.xterm.overrideDerivation (old: {
     configureFlags = old.configureFlags ++ [ "--disable-wide-chars" ];
   });
