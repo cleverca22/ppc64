@@ -41,7 +41,7 @@
   fileSystems = {
     "/boot" = {
       #device = "UUID=4AA3-EF9F";
-      device = "UUID=5521-7907";
+      #device = "UUID=5521-7907";
     };
     "/" = {
       #device = "UUID=387e8327-4894-4aa1-8a88-b3f3a663bac2";
