@@ -82,6 +82,7 @@
           system = "x86_64-linux";
           configuration = {
             imports = [ ./configuration.nix ];
+            fileSystems."/boot".label = "NIXOS_BOOT";
             nixpkgs.overlays = [
               (self': super: {
                 linux_xenon = self.packages.powerpc64-linux.linux;
