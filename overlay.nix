@@ -76,4 +76,7 @@ self: super: {
   toxvpn = super.toxvpn.overrideDerivation (old: {
     postInstall ="true";
   });
+  libjpeg_turbo = super.libjpeg_turbo.overrideAttrs (old: {
+    doCheck = false;
+  });
 }
