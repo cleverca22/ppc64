@@ -79,4 +79,7 @@ self: super: {
   libjpeg_turbo = super.libjpeg_turbo.overrideAttrs (old: {
     doCheck = false;
   });
+  pixman = super.pixman.overrideAttrs (old: {
+    doCheck = false;
+  });
 }
