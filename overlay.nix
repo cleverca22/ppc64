@@ -70,6 +70,9 @@ self: super: {
     doCheck = false;
     doInstallCheck = false;
   });
+  libarchive = super.libarchive.overrideAttrs (old: {
+    doCheck = false;
+  });
   libtoxcore = super.libtoxcore.override {
     stdenv = super.stdenv // {isAarch32=true;};
   };
