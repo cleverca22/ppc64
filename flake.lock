@@ -32,23 +32,6 @@
         "type": "github"
       }
     },
-    "linux": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1716333586,
-        "narHash": "sha256-edBNuRrY8uszhWqZ+1WFWLxDqKHyOPSlsGo3aoUox9w=",
-        "owner": "rwf93",
-        "repo": "linux",
-        "rev": "9bbbff4f7817e74f1e434b7bb2cd3801e1f9ff09",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rwf93",
-        "ref": "xenon-6.5",
-        "repo": "linux",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1722820544,
@@ -85,7 +68,6 @@
       "inputs": {
         "libfat": "libfat",
         "libxenon": "libxenon",
-        "linux": "linux",
         "nixpkgs": "nixpkgs",
         "nixpkgs2": "nixpkgs2",
         "xell": "xell"

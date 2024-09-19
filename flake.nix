@@ -2,10 +2,10 @@
   inputs = {
     nixpkgs.url = "github:cleverca22/nixpkgs/ugly-test";
     nixpkgs2.url = "github:nixos/nixpkgs/nixos-unstable";
-    linux = {
-      url = "github:rwf93/linux/xenon-6.5";
-      flake = false;
-    };
+    #linux = {
+    #  url = "github:rwf93/linux/xenon-6.5";
+    #  flake = false;
+    #};
     xell.url = "github:cleverca22/xell-reloaded";
     xell.flake = false;
     libxenon.url = "github:cleverca22/libxenon";
@@ -17,9 +17,13 @@
     extra-substituters = [ "https://hydra.angeldsis.com/" ];
     extra-trusted-public-keys = [ "hydra.angeldsis.com-1:7s6tP5et6L8Y6sX7XGIwzX5bnLp00MtUQ/1C9t1IBGE=" ];
   };
-  outputs = { self, nixpkgs, linux, xell, libxenon, libfat, nixpkgs2 }:
+  outputs = { self, nixpkgs, xell, libxenon, libfat, nixpkgs2 }:
   let
     host = import nixpkgs { system = "x86_64-linux"; };
+    linux = host.fetchurl {
+      url = "https://github.com/rwf93/linux/archive/9bbbff4f7817e74f1e434b7bb2cd3801e1f9ff09.tar.gz";
+      hash = "sha256-nOocvxz0gVh7ooCIRtyNlFyVOTbYYzhZ9SVIFFVx7ok=";
+    };
     p = import nixpkgs {
       system = "x86_64-linux";
       crossSystem = import ./cross.nix;
