@@ -162,19 +162,33 @@
     in {
       inherit (pkgs.xorg) xorgserver;
       config = g5linux.configfile;
-      start-vm = pkgs.writeShellScriptBin "start-vm" ''
+      # 40p is single core
+      # amigaone is single core
+      # mac99 boots
+      # pseries hangs with no signs of linux
+      # ref405ep is single core
+      # sam460ex is single core
+      # bamboo is single core
+      # mpc8544ds 15 cores max, doesnt boot
+      start-vm = pkgs2.writeShellScriptBin "start-vm" ''
         export PATH=${pkgs.lib.makeBinPath (with pkgs2; [ qemu ])}:$PATH
         if ! test -e test.qcow2; then
           qemu-img create -f qcow2 -b ${ext4image}/nixos.qcow2 -F qcow2 test.qcow2
           nix-store -r ${ext4image} --add-root rootfs.root --indirect
         fi
-        qemu-system-ppc64 -kernel ${qemu-eval.system}/kernel -initrd ${qemu-eval.system}/initrd -serial stdio -M mac99,via=pmu -m 2g \
+
+        MACHINE=mac99,via=pmu
+        #MACHINE=none
+
+        #NET="-net tap,ifname=tap0,script=/run/current-system/sw/bin/true"
+        NET="-net user"
+        qemu-system-ppc64 -kernel ${qemu-eval.system}/kernel -initrd ${qemu-eval.system}/initrd -serial stdio -M $MACHINE -m 2g \
+          -smp 1 \
           -net nic,model=virtio \
-          -net tap,ifname=tap0,script=/run/current-system/sw/bin/true \
-          -drive index=0,id=drive1,file=test.qcow2,cache=writeback,werror=report,if=virtio \
+          $NET \
+          -drive index=0,id=drive1,file=test.qcow2,cache=writeback,werror=report,if=virtio,discard=on \
           -append "init=${qemu-eval.system}/init $(cat ${qemu-eval.system}/kernel-params)"
 
-          #-net user \
       '';
     };
     hydraJobs = {
