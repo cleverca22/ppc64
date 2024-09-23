@@ -195,7 +195,12 @@
       powerpc64-linux = {
         inherit (self.packages.powerpc64-linux) nixos xterm xorgserver xvfb mesa;
         #inherit (p) lightdm sx sddm toxvpn;
-        inherit (nativeppc64) i3 hello lightdm sddm toxvpn nix;
+        inherit (nativeppc64) hello lightdm sddm toxvpn nix;
+        i3 = nativeppc64.i3 // {
+          meta = nativeppc64.i3.meta // {
+            timeout = 48 * 3600; # 48h
+          };
+        };
         qemu-user = p.qemu.override {
           alsaSupport = false;
           canokeySupport = false;
