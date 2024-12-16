@@ -144,6 +144,7 @@
         configuration = {
           imports = [ ./qemu-configuration.nix ];
           boot.kernelPackages = g5linuxPackages;
+          networking.hostName = "nixos-ppc64";
           nixpkgs.crossSystem = qemuCrossSystem;
           nixpkgs.overlays = [ (self: super: {
             makeModulesClosure = attrs: super.makeModulesClosure (attrs // { allowMissing = true; });
@@ -157,7 +158,7 @@
         label = "NIXOS_ROOT";
         copyChannel = false;
         config = qemu-eval.config;
-        format = "qcow2";
+        format = "qcow2-compressed";
       };
     in {
       inherit (pkgs.xorg) xorgserver;
