@@ -211,7 +211,7 @@
     };
     hydraJobs = {
       powerpc64-linux = {
-        inherit (self.packages.powerpc64-linux) nixos xterm xorgserver xvfb mesa;
+        inherit (self.packages.powerpc64-linux) nixos xterm xorgserver xvfb mesa livecd;
         #inherit (p) lightdm sx sddm toxvpn;
         inherit (nativeppc64) hello lightdm sddm toxvpn nix;
         i3 = nativeppc64.i3 // {
