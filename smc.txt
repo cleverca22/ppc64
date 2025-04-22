@@ -1,3 +1,5 @@
+https://free60.org/Hardware/Console/SMC/
+
 turn off all LED's
 echo -en \\x99\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00 > /dev/smc
 
@@ -6,7 +8,8 @@ the first byte is a command code
 
 xenon_smc_message() in linux, is used to send messages within the kernel
 
-0x04, read RTC, returns a 40bit int, msec since nov 15th, 2001?
+0x01    power on type
+0x04    read RTC, returns a 40bit int, msec since nov 15th, 2001?
 
 0x07, reads the temp
   bytes 1-8 return 4 temp readings?
@@ -15,15 +18,21 @@ xenon_smc_message() in linux, is used to send messages within the kernel
   5/6
   7/8
   each 16bit int, goes thru `int * 1000 / 256` to convert to a temp
+0x0a    request tray state
 0x0f, libxenon, xenon_smc_read_avpack()
 0x11
   HANA? drivers/char/xenon_ana.c
   HDMI EDID i2c is also on hana, libxenon xenon_smc_i2c_ddc_lock()
+0x12    request smc version
+0x16    request ir address
+0x17    request tilt sensor
 
 0x82 0x01 0x00 0x00, poweroff
-0x82 0x04 0x30 0x00, reboot
-0x83, ir codes sent from the SMC
+0x82 0x04 0x30 0x00, reboot to dash
+0x83    smc event
+  ir codes sent from the SMC
   byte 1, 63/64/65, dvd drive state
+  0x11 0x01  sent by power button
 0x85, set RTC
 0x88, set fan algo
   byte 1, algo#
@@ -39,15 +48,118 @@ xenon_smc_message() in linux, is used to send messages within the kernel
 0x99: LED_CONTROL
   byte 1, 0x1=SET, libxenon calls it override, xenon_smc_set_led()
   byte 2, red/green LED's
-    low nibble, red?
-    high nibble, green?
+    low nibble, red, not present on slims?
+    high nibble, green
     bit 0, top left
     bit 1, top right
     bit 2, bottom left
     bit 3, bottom right
+
+0x9a    RTC wake
 
 [root@nixbox360:/sys/devices/platform/xenon-hwmon]# cat cpu_temp
 [root@nixbox360:/sys/devices/platform/xenon-hwmon]# cat gpu_temp
 [root@nixbox360:/sys/devices/platform/xenon-hwmon]# cat gpu_fan_speed
 [root@nixbox360:/sys/devices/platform/xenon-hwmon]# cat cpu_fan_speed
 
+
+from https://github.com/X360Tools/PicoFlasher/blob/master/spiex.c#L35
+and https://github.com/Free60Project/libxenon/blob/master/libxenon/drivers/xenon_nand/xenon_sfcx.h
+
+when accessing from the ppc side, all registers are at (0xea00_c000 | reg)
+when accessing over SPI:
+  read_reg:
+    SPI_SS_N=0
+    write 2 bytes, (reg<<2) | 1, 0xff
+    write 4 dummy bytes, the 32bit read will take place in this time
+    SPI_SS_N=1
+  write_reg:
+    SPI_SS_N=0
+    write 1 bytes, (reg << 2) | 2
+    write 32 bits
+    SPI_SS_N=1
+
+start_smc:
+  DBG_EN=0
+  RST_XDK_N=0
+  delay 50ms
+  RST_XDK_N=1
+
+stop_smc:
+  DBG_EN=0
+  delay 50ms
+  SPI_SS_N=0
+  RST_XDK_N=0
+  delay 50ms
+  DBG_EN=1
+  RST_XDK_N=1
+  delay 50ms
+  SPI_SS_N=1
+  delay 50ms
+  spi init
+
+nand_read_page:
+  nand_clear_status
+  ADDRESS = lba << 9
+  COMMAND = PHY_PAGE_TO_BUF
+  wait ready
+  ADDRESS = 0
+  loop (512+16)/4:
+    COMMAND = PAGE_BUF_TO_REG
+    append32(outbuf) = DATA
+
+write_page:
+  nand_clear_status
+  CONFIG |= WP_EN
+  ADDRESS = 0
+  loop:
+    DATA = pop(inbuf)
+    COMMAND = REG_TO_PAGE_BUF
+  ADDRESS = pagenr << 9
+  COMMAND = UNLOCK_CMD_0
+  COMMAND = UNLOCK_CMD_1
+  wait ready
+  COMMAND = WRITE_PAGE_TO_PHY
+  wait ready
+  check status isnt an error
+  CONFIG &= ~WP_EN
+
+nand_erase_block:
+  nand_clear_status
+  CONFIG |= 0x8
+  ADDRESS = pagenr << 9
+  COMMAND = UNLOCK_CMD_1
+  COMMAND = UNLOCK_CMD_0
+  COMMAND = BLOCK_ERASE
+  wait ready
+
+registers:
+  0x00    CONFIG    flash config
+    bit 0   software reset
+    bit 1   ecc decode disable
+    bit 2   interrupt enable
+    bit 3   WP_EN
+  0x04    STATUS    nand status, writing a bit clears it
+    bit 0, busy
+    bit 1, write or erase error
+    0x1c    ecc error, 3 bits
+  0x08    COMMAND
+  0x0c    ADDRESS   byte offset, not counting spares, typically page<<9
+  0x10    DATA
+  0x14    LOGICAL
+  0x18    PHYSICAL
+  0x1c    DPHYSADDR
+  0x20    MPHYSADDR
+
+commands:
+  0x00    PAGE_BUF_TO_REG
+  0x01    REG_TO_PAGE_BUF
+  0x02    LOG_PAGE_TO_BUF
+  0x03    PHY_PAGE_TO_BUF
+  0x04    WRITE_PAGE_TO_PHY
+  0x05    BLOCK_ERASE
+  0x06    DMA_LOG_TO_RAM
+  0x07    DMA_PHY_TO_RAM
+  0x08    DMA_RAM_TO_PHY
+  0x55    UNLOCK_CMD_0
+  0xaa    UNLOCK_CMD_1

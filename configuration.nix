@@ -33,6 +33,7 @@
     (pkgs.callPackage ./fbdoom.nix {})
     sysstat
     git
+    nmap
     dtc
     speedtest-cli
     iperf3

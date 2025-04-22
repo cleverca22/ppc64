@@ -96,6 +96,23 @@
           };
         };
       in eval.system // { inherit eval; };
+      livecd = let
+        eval = import (nixpkgs + "/nixos") {
+          system = "x86_64-linux";
+          configuration = {
+            imports = [
+              ./configuration.nix
+              ./iso-image.nix
+            ];
+            nixpkgs.overlays = [
+              (self': super: {
+                linux_xenon = self.packages.powerpc64-linux.linux;
+                linuxXenonPackages = self'.linuxPackagesFor self'.linux_xenon;
+              })
+            ];
+          };
+        };
+      in eval.config.system.build.isoImage // { inherit eval; };
       nixos_tar = host.callPackage (nixpkgs + "/nixos/lib/make-system-tarball.nix") {
         fileName = "nixos_tar";
         storeContents = [
