@@ -13,6 +13,7 @@ in
     boot = {
       kernelParams = [
         "maxcpus=1"
+        "rootdelay=30"
       ];
     };
     system.build.isoImage = pkgs.callPackage "${pkgs.path}/nixos/lib/make-iso9660-image.nix" {
